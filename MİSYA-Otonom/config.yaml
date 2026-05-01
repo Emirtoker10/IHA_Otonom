@@ -1,0 +1,76 @@
+# ============================================================
+#  VTOL SAR Sistemi — Merkezi Yapılandırma
+# ============================================================
+
+# --- Kamera (CSI / Raspberry Pi) ---
+camera:
+  index: 0                    # /dev/video0 (libcamera-vid veya v4l2)
+  width: 1280
+  height: 720
+  fps: 30
+  use_libcamera: true         # True → Picamera2, False → OpenCV VideoCapture
+
+# --- YOLO ---
+yolo:
+  model_path: "models/yolov8s.pt"
+  confidence_threshold: 0.55  # T — güven eşiği
+  iou_threshold: 0.45
+  target_class: "person"      # tespit edilecek sınıf
+  device: "cpu"               # "cpu" | "cuda" | "mps"
+
+# --- Tespit Doğrulama (N-frame) ---
+detection:
+  confirm_frames: 8           # N — kaç ardışık frame sonra doğrulama
+  max_lost_frames: 5          # ByteTrack kaybı tolere etme
+  min_track_age: 3            # en az bu kadar frame'den eski track'ler işlenir
+
+# --- Hover & Uçuş ---
+flight:
+  hover_altitude_m: 15.0      # hover yüksekliği (metre)
+  hover_duration_s: 5.0       # hover bekle süresi (saniye)
+  slowdown_distance_m: 10.0   # hedefe yaklaşırken yavaşlama başlangıcı
+  land_return_altitude_m: 30.0
+
+# --- MAVLink ---
+mavlink:
+  connection_string: "/dev/ttyAMA0"   # Pixhawk UART → Pi
+  baud: 57600
+  timeout_s: 10
+  system_id: 1
+
+# --- LiDAR ---
+lidar:
+  port: "/dev/ttyUSB0"
+  baud: 115200
+  max_range_m: 40.0
+  min_range_m: 0.3
+
+# --- Kamera Kalibrasyon ---
+camera_calibration:
+  fx: 800.0                   # odak uzunluğu x (piksel)
+  fy: 800.0                   # odak uzunluğu y (piksel)
+  cx: 640.0                   # optik merkez x
+  cy: 360.0                   # optik merkez y
+  hfov_deg: 62.2              # yatay görüş açısı (Pi Camera v2)
+  vfov_deg: 48.8              # dikey görüş açısı
+
+# --- GCS Haberleşme ---
+gcs:
+  host: "192.168.1.100"       # GCS IP
+  port: 5760
+  protocol: "udp"             # "udp" | "tcp"
+  retry_interval_s: 2.0
+
+# --- Drone Ayrılma ---
+drone:
+  release_pin: 17             # GPIO pin (BCM) — servo/relay tetikleyici
+  release_pulse_ms: 1500      # servo pulse (ms) — serbest bırak konumu
+  lock_pulse_ms: 1000         # servo pulse (ms) — kilitli konum
+  arm_gpio_pin: 27            # drone ARM sinyal pini
+
+# --- Logging ---
+logging:
+  level: "INFO"               # DEBUG | INFO | WARNING | ERROR
+  log_dir: "logs/"
+  max_bytes: 10485760         # 10 MB
+  backup_count: 5

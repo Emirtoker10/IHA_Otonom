@@ -1,0 +1,26 @@
+# VTOL SAR Sistemi — Python bağımlılıkları
+# Kurulum: pip install -r requirements.txt --break-system-packages
+
+# ── Görüntü işleme & YOLO ───────────────────────────────────────────
+ultralytics>=8.2.0          # YOLOv8 + ByteTrack dahil
+opencv-python>=4.9.0        # OpenCV (fallback kamera + görselleştirme)
+
+# ── Kamera (Raspberry Pi CSI) ───────────────────────────────────────
+picamera2>=0.3.19           # libcamera tabanlı Pi kamera (Pi OS Bookworm)
+
+# ── MAVLink / Pixhawk ───────────────────────────────────────────────
+pymavlink>=2.4.41           # MAVLink protokolü
+
+# ── Seri haberleşme (LiDAR) ─────────────────────────────────────────
+pyserial>=3.5
+
+# ── GPIO (Raspberry Pi) ─────────────────────────────────────────────
+RPi.GPIO>=0.7.1             # Pin kontrolü (Pi üzerinde kurulur)
+
+# ── Config & yardımcılar ────────────────────────────────────────────
+PyYAML>=6.0.1               # YAML config okuyucu
+numpy>=1.26.0               # Dizi işlemleri
+
+# ── Opsiyonel: geliştirme & test ────────────────────────────────────
+# pytest>=8.0.0
+# pytest-mock>=3.14.0
